@@ -19,20 +19,20 @@ private:	// private variables
 	unsigned int id; // instance id
 
 public:		// constructor/destructor
-	GldMain(int argc = 0, char *argv[] = NULL);
+	GldMain(int argc = 0, const char *argv[] = NULL);
 	~GldMain(void);
 #if defined WIN32 && _DEBUG 
 	static void pause_at_exit(void);
 #endif
 
 public:		// public methods
-	int mainloop(int argc = 0, char *argv[] = NULL);
+	int mainloop(int argc = 0, const char *argv[] = NULL);
 
 private:	// private methods
 	void set_global_browser(const char *path = NULL);
 	void set_global_execname(const char *path);
 	void set_global_execdir(const char *path);
-	void set_global_command_line(int argc = 0,char *argv[] = NULL);
+	void set_global_command_line(int argc = 0, const char *argv[] = NULL);
 	void set_global_workdir(const char *path = NULL);
 	void create_pidfile(void);
 	static void delete_pidfile(void);
@@ -74,7 +74,7 @@ public:
 		try {
 			if ( buf )
 			{
-				if ( vsnprintf(buf,sizeof(buf),format,ptr) < 0 )
+				if ( vsnprintf(buf,size-1,format,ptr) < 0 )
 				{
 					msg = std::string("GldException::GldException(): vsnprintf() failed");
 				}

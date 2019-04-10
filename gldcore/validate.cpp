@@ -89,7 +89,11 @@ public:
 	{
 		char pname[1024];
 		char cwd[1024];
-		getcwd(cwd,sizeof(cwd));
+		if ( getcwd(cwd,sizeof(cwd)) == NULL )
+		{
+			output_error("inc_filed(name='%s'): unable to change working directory",name);
+			return;
+		}
 		strcpy(pname,name);
 		char *pwd = cwd;
 		char *ptr = pname;
@@ -244,11 +248,18 @@ static int report_newtable(const char *table)
 	}
 	return len;
 }
+
 static int report_close(void)
 {
 	wlock(&report_lock);
-	if ( report_fp ) fclose(report_fp);
-	report_fp = NULL;
+	if ( report_fp ) 
+	{
+		fclose(report_fp);
+	}
+	else
+	{
+		report_fp = NULL;
+	}
 	wunlock(&report_lock);
 	return report_rows;
 }
@@ -471,7 +482,12 @@ static counters run_test(char *file, size_t id, double *elapsed_time=NULL)
 	}
 	*ext = '\0'; // remove extension from dir
 	char cwd[1024];
-	getcwd(cwd,sizeof(cwd));	
+	if ( getcwd(cwd,sizeof(cwd)) == NULL )
+	{
+		output_warning("(proc %d) run_test(char *file='%s'): unable to read current working directory", id, file);
+		return result;
+	}
+
 	if ( clean && !destroy_dir(dir) )
 	{
 		output_error("(proc %d) run_test(char *file='%s'): unable to destroy test folder", id, dir);
@@ -487,7 +503,7 @@ static counters run_test(char *file, size_t id, double *elapsed_time=NULL)
 	if ( (0 != mkdir(dir,0750)) && clean )
 #endif
 	{
-		output_error("(proc %d) run_test(char *file='%s'): unable to create test folder", id, dir);
+		output_error("(proc %d) run_test(char *file='%s'): unable to create test folder", id, file);
 		result.inc_access(file);
 		return result;
 	}
@@ -657,13 +673,13 @@ void *(run_test_proc)(void *arg)
 	while ( (item=popdir())!=NULL )
 	{
 		IN_MYCONTEXT output_debug("process %d picked up '%s'", id, item->name);
-		double dt;
+		double dt = 0;
 		counters result = run_test(item->name,id,&dt);
 		if ( result.get_nerrors()>0 ) passed=false;
 		if ( global_validateoptions&VO_RPTGLM )
 		{
 			const char *flags[] = {"","E","S","X"};
-			char code = 0;
+			size_t code = 0;
 			if ( result.get_nerrors() ) code=1;
 			if ( result.get_nsuccess() ) code=2;
 			if ( result.get_nexceptions() ) code=3;
@@ -702,7 +718,7 @@ static size_t process_dir(const char *path, bool runglms=false)
 	while ( (dp=readdir(dirp))!=NULL )
 	{
 		char item[1024];
-		size_t len = sprintf(item,"%s/%s",path,dp->d_name);
+		sprintf(item,"%s/%s",path,dp->d_name);
 		char *ext = strrchr(item,'.');
 		if ( dp->d_name[0]=='.' ) continue; // ignore anything that starts with a dot
 		if ( dp->d_type==DT_DIR && strcmp(dp->d_name,"autotest")==0 )
@@ -744,19 +760,19 @@ char *encode_result(char *data,size_t sz)
 	for ( i=0 ; i<len ; i++ )
 	{
 		static char t[] = "0123456789ABCDEF";
-		code[i] = t[code[i]];
+		code[i] = t[(size_t)code[i]];
 	}
 	code[len]='\0';
 	return code;
 }
 
 /** main validation routine */
-int validate(void *main, int argc, char *argv[])
+int validate(void *main, int argc, const char *argv[])
 {
 	size_t i;
 	int redirect_found = 0;
 	strcpy(validate_cmdargs,"");
-	for ( i=1 ; i<argc ; i++ )
+	for ( i = 1 ; i < (size_t)argc ; i++ )
 	{
 		if ( strcmp(argv[i],"--redirect")==0 ) redirect_found = 1;
 		strcat(validate_cmdargs,argv[i]);
@@ -861,7 +877,7 @@ int validate(void *main, int argc, char *argv[])
 
 	pthread_t *pid = new pthread_t[n_procs];
 	IN_MYCONTEXT output_debug("starting validation with cmdargs '%s' using %d threads", validate_cmdargs, n_procs);
-	for ( i=0 ; i<n_procs ; i++ )
+	for ( i = 0 ; i < (size_t)n_procs ; i++ )
 	{
 		if ( pthread_create(&pid[i],NULL,run_test_proc,(void*)i) != 0 )
 		{
@@ -874,7 +890,7 @@ int validate(void *main, int argc, char *argv[])
 	}	
 	void *rc;
 	IN_MYCONTEXT output_debug("begin waiting process");
-	for ( i=0 ; i<n_procs ; i++ )
+	for ( i = 0 ; i < (size_t)n_procs ; i++ )
 	{
 		if ( pthread_join(pid[i],&rc) != 0 )
 		{
@@ -985,7 +1001,7 @@ int validate(void *main, int argc, char *argv[])
 	report_title("END TEST REPORT");
 	report_newrow();
 
-	fclose(report_fp);
+	report_close();
 
 #ifndef WIN32
 #ifdef __APPLE__

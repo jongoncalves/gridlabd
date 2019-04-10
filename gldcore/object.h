@@ -25,6 +25,8 @@ typedef unsigned int OBJECTNUM; /** Object id number */
 typedef const char * OBJECTNAME; /** Object name */
 typedef char FULLNAME[1024]; /** Full object name (including space name) */
 
+#define PADDR_X(X,T) ((char*)&((T)->X)-(char*)(T))
+
 /* object flags */
 #define OF_NONE			0x00000000	/**< Object flag; none set */
 #define OF_HASPLC		0x00000001	/**< Object flag; external PLC is attached, disables local PLC */
@@ -104,7 +106,7 @@ typedef struct s_object_list {
 	LOCKVAR lock; /**< object lock */
 	unsigned int rng_state; /**< random number generator state */
 	TIMESTAMP heartbeat; /**< heartbeat call interval (in sim-seconds) */
-	uint64 guid[2]; /**< globally unique identifier */
+	unsigned long long guid[2]; /**< globally unique identifier */
 	EVENTHANDLERS events;
 	/* IMPORTANT: flags must be last */
 	uint64 flags; /**< object flags */
@@ -145,7 +147,7 @@ typedef struct s_callbacks {
 		OBJECT *(*get_first)(void);
 		int (*set_dependent)(OBJECT*,OBJECT*);
 		int (*set_parent)(OBJECT*,OBJECT*);
-		int (*set_rank)(OBJECT*,unsigned int);
+		OBJECTRANK (*set_rank)(OBJECT*,OBJECTRANK);
 	} object;
 	struct {
 		PROPERTY *(*get_property)(OBJECT*,PROPERTYNAME,PROPERTYSTRUCT*);
@@ -192,7 +194,7 @@ typedef struct s_callbacks {
 		double (*sampled)(unsigned int *rng,unsigned int n, double *x);
 		double (*exponential)(unsigned int *rng,double l);
 		RANDOMTYPE (*type)(const char *name);
-		double (*value)(RANDOMTYPE type, ...);
+		double (*value)(int type, ...);
 		double (*pseudo)(RANDOMTYPE type, unsigned int *state, ...);
 		double (*triangle)(unsigned int *rng,double a, double b);
 		double (*beta)(unsigned int *rng,double a, double b);
@@ -322,7 +324,7 @@ typedef struct s_callbacks {
 		} latitude, longitude;
 	} geography;
 	struct {
-		struct s_http_result* (*read)(char *url, int maxlen);
+		struct s_http_result* (*read)(const char *url, int maxlen);
 		void (*free)(struct s_http_result *result);
 	} http;
 	struct {
@@ -408,14 +410,14 @@ const char *object_get_string_by_name(OBJECT *obj, const char *name);
 FUNCTIONADDR object_get_function(CLASSNAME classname, FUNCTIONNAME functionname);
 const char *object_property_to_string(OBJECT *obj, const char *name, char *buffer, int sz);
 const char *object_get_unit(OBJECT *obj, const char *name);
-int object_set_rank(OBJECT *obj, OBJECTRANK rank);
+OBJECTRANK object_set_rank(OBJECT *obj, OBJECTRANK rank);
 
 OBJECT *object_find_by_id(OBJECTNUM id);
 OBJECT *object_get_first(void);
 OBJECT *object_get_next(OBJECT *obj);
 unsigned int object_get_count(void);
-int object_dump(char *buffer, int size, OBJECT *obj);
-int object_save(char *buffer, int size, OBJECT *obj);
+size_t object_dump(char *buffer, size_t size, OBJECT *obj);
+size_t object_save(char *buffer, size_t size, OBJECT *obj);
 int object_saveall(FILE *fp);
 int object_saveall_xml(FILE *fp);
 void object_stream_fixup(OBJECT *obj, CLASSNAME classname, const char *objname);

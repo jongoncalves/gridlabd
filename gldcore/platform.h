@@ -32,10 +32,8 @@
 	#include <sys/unistd.h>
 	#if __WORDSIZE__ == 64
 		#define X64
-		#define int64 long long /**< standard 64-bit integers on 64-bit machines */
-	#else
-		#define int64 long long /**< standard 64-bit integers on 32-bit machines */
 	#endif
+	#define int64 long long /**< standard 64-bit integers on 64-bit machines */
 	#define FMT_INT64 "ll" /**< standard version of 64-bit integer printf format string */
 	#define atoi64 atoll	/**< standard version of 64-bit atoi */
 	#define stricmp strcasecmp	/**< deprecated stricmp */
@@ -53,7 +51,7 @@
 	#else
 		#define NATIVE int32	/**< native integer size */
 	#endif
-	static int64 _qnan = 0xffffffffffffffffLL;
-	#define QNAN (*(double*)&_qnan)
+	#include <math.h>
+	#define QNAN NAN
 #endif
 /**@}**/

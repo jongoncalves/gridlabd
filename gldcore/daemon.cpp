@@ -15,7 +15,8 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <pwd.h>
-#include "gridlabd.h"
+#include "main.h"
+#include "class.h"
 #include "output.h"
 #include "cmdarg.h"
 #include "daemon.h"
@@ -77,7 +78,7 @@ static struct s_config {
 	{"keepalive",keepalive},
 	{"timeout",timeout},
 	{"umask",umaskstr},
-	NULL, NULL // required to end loop
+	{NULL, NULL} // required to end loop
 };
 
 static void daemon_log(const char *format, ...)
@@ -155,8 +156,6 @@ static void daemon_cleanup(void)
 {
 	if ( daemon_pid == getpid() )
 	{
-		struct stat fs;
-
 		// remove the pid file
 		if ( unlink(pidfile) == 0 )
 			daemon_log("deleted pidfile '%s'",pidfile);
@@ -294,7 +293,7 @@ static int daemon_run(int sockfd)
 		strcat(global_command_line,argv[n]);
 	}
 
-	if ( argc > 1 && cmdarg_load(argc,argv) == SUCCESS )
+	if ( argc > 1 && cmdarg_load(argc,(const char**)argv) == SUCCESS )
 	{
 		// write result
 		daemon_log("running command [%s] on socket %d", global_command_line, sockfd);
@@ -351,7 +350,6 @@ static void daemon_process(void)
 	int sockfd, portno=atoi(port);
 	socklen_t clilen;
 	struct sockaddr_in serv_addr, cli_addr;
-	int n;
 	if ( portno <= 0 )
 	{
 		daemon_log("invalid port number (port=%s)",port);
@@ -502,7 +500,7 @@ static void daemon_loadconfig(void)
 	global_suppress_repeat_messages = old_repeat;
 }
 
-static int daemon_arguments(int argc, char *argv[])
+static int daemon_arguments(int argc, const char *argv[])
 {
 	int nargs = 0, portno = atoi(port);
 #define NEXT (argc--,argv++,++nargs)
@@ -590,7 +588,7 @@ static int daemon_arguments(int argc, char *argv[])
 
 static int daemon_configure()
 {
-	pid_t pid, sid;
+	pid_t sid;
 
 	// change the working folder
 	if ( enable_jail )
@@ -655,7 +653,7 @@ static int daemon_configure()
 	return 0;
 }
 
-int daemon_start(int argc, char *argv[])
+int daemon_start(int argc, const char *argv[])
 {
 	if ( disable_daemon_command )
 	{
@@ -715,12 +713,9 @@ int daemon_start(int argc, char *argv[])
 		daemon_process();
 		return nargs+1;
 	}
-	output_fatal("unreachable code reached");
-	abort();	
-	return 0;
 }
 
-int daemon_stop(int argc, char *argv[])
+int daemon_stop(int argc, const char *argv[])
 {
 	if ( disable_daemon_command )
 	{
@@ -766,19 +761,18 @@ int daemon_stop(int argc, char *argv[])
 		return nargs+1;
 }
 
-int daemon_restart(int argc, char *argv[])
+int daemon_restart(int argc, const char *argv[])
 {
 	if ( disable_daemon_command )
 	{
 		output_error("daemon commands not permitted");
 		exit(XC_INIERR);
 	}
-	
-	int nargs = 0;
+
 	if ( argc > 0 )
 	{
 		// process command arguments
-		nargs = daemon_arguments(argc,argv);
+		daemon_arguments(argc,argv);
 
 		// access config file
 		daemon_loadconfig();
@@ -791,7 +785,7 @@ int daemon_restart(int argc, char *argv[])
 	return daemon_start(0,NULL);
 }
 
-int daemon_status(int argc, char *argv[])
+int daemon_status(int argc, const char *argv[])
 {
 	if ( disable_daemon_command )
 	{
@@ -828,7 +822,7 @@ static void daemon_remote_kill(int sig)
 }
 
 // this is the only code that does not run on the daemon/server side
-int daemon_remote_client(int argc, char *argv[])
+int daemon_remote_client(int argc, const char *argv[])
 {
 	char hostname[1024];
 	int sockfd, portno = 6266, n;
