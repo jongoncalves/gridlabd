@@ -35,4 +35,7 @@ jobs:
           command: ./configure --enable-silent-rules --prefix=$PWD/install
       - run:
           name: Make Install
-          command: make -j install
+          command: |
+            make
+            make install
+            make validate
