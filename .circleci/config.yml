@@ -6,8 +6,8 @@ jobs:
     steps:
       - checkout            
       - run:
-          name: Install sudo
-          command: yum install sudo -y
+          name: Become SU
+          command: echo | su
       - run:
           name: Install Autoconf
           command: sudo yum install autoconf
