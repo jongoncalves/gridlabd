@@ -23,10 +23,10 @@ jobs:
           command: sudo apt-get install libxerces-c3.2
       - run:
           name: Install MySQL Connector C
-          command: sudo apt-get install libmysqlcppconn-dev
+          command: sudo apt-get install libmysqlcppconn
       - run:
           name: Install Armadillo
-          command: sudo apt-get install armadillo
+          command: sudo apt-get install libarmadillo9
       - run:
           name: Autoreconf
           command: autoreconf -isf
