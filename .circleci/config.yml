@@ -7,17 +7,17 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Check the Stream Editor
+          command: which sed
+      - run:
           name: Update
           command: apt-get update
       - run:
           name: Install Autoconf
-          command: apt-get autoconf
+          command: sudo apt-get autoconf
       - run:
           name: Install Automake
-          command: apt-get automake
+          command: sudo apt-get automake
       - run:
           name: Install Libtool
-          command: apt-get libtool
-      - run:
-          name: Check the Stream Editor
-          command: which sed
+          command: sudo apt-get libtool
