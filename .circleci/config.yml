@@ -6,11 +6,18 @@ jobs:
 
     steps:
       - checkout
-
       - run:
-          name: Greeting
-          command: echo Initial test of getting CI setup for Gridlab-D.
-
+          name: Update
+          command: apt-get update
       - run:
-          name: Print the Current Time
-          command: date
+          name: Install Autoconf
+          command: apt-get autoconf
+      - run:
+          name: Install Automake
+          command: apt-get automake
+      - run:
+          name: Install Libtool
+          command: apt-get libtool
+      - run:
+          name: Check the Stream Editor
+          command: which sed
