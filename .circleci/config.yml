@@ -2,36 +2,39 @@ version: 2
 jobs:
   build:
     docker:
-      - image: centos/python-36-centos7
+      - image: circleci/buildpack-deps:18.04
 
     steps:
       - checkout            
       - run:
-          name: Install sudo
-          command: |
-            su
-            yum install sudo
+          name: Update apt get
+          command: sudo apt-get update      
       - run:
           name: Install Autoconf
-          command: sudo yum install autoconf
+          command: sudo apt-get install autoconf
       - run:
           name: Install Automake
-          command: sudo yum install automake
+          command: sudo apt-get install automake
       - run:
           name: Install Libtool
-          command: sudo yum install libtool
+          command: sudo apt-get install libtool
       - run:
           name: Install Xerces-c
-          command: sudo yum install libxerces-c-dev
+          command: sudo apt-get install libxerces-c-dev
       - run:
           name: Install MySQL Connector C
-          command: sudo yum install libmysqlcppconn-dev
+          command: sudo apt-get install libmysqlcppconn-dev
       - run:
           name: Install Armadillo
-          command: sudo yum install libarmadillo8
+          command: sudo apt-get install libarmadillo7
       - run:
           name: Autoreconf
           command: autoreconf -isf
+      - run:
+          name: Customization
+          run: |
+            ./customize status
+            ./customize configure status --enable-silent-rules --prefix=/usr/local --with-mysql=/usr/local 'CXXFLAGS=-w -O2' 'CFLAGS=-w -O2'
       - run:
           name: Configure
           command: ./configure --enable-silent-rules --prefix=$PWD/install
