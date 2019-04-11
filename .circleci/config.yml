@@ -20,7 +20,7 @@ jobs:
           command: sudo apt-get install libtool
       - run:
           name: Install Xerces-c
-          command: sudo apt-get install libxerces-c3.2
+          command: sudo apt-get install libxerces-c-dev
       - run:
           name: Install MySQL Connector C
           command: sudo apt-get install libmysqlcppconn-dev
