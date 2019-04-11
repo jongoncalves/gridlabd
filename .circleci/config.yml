@@ -9,7 +9,6 @@ jobs:
       - run:
           name: Update apt, add repo and install python 3.6
           command: |
-            add-apt-repository ppa:deadsnakes/ppa
             apt update
             apt install python3.6
       - run:
