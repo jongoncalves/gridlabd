@@ -5,12 +5,12 @@ jobs:
       - image: centos/devtoolset-7-toolchain-centos7
     steps:
       - checkout            
-      # - run:
-      #     name: Update apt get
-      #     command: sudo apt-get update
+      - run:
+          name: Install sudo
+          command: yum install sudo -y
       - run:
           name: Install Autoconf
-          command: yum install autoconf
+          command: sudo yum install autoconf
       - run:
           name: Install Automake
           command: yum install automake
