@@ -6,27 +6,27 @@ jobs:
 
     steps:
       - checkout            
-      - run:
-          name: Update apt get
-          command: apt-get update      
+      # - run:
+      #     name: Update apt get
+      #     command: apt-get update      
       - run:
           name: Install Autoconf
-          command: apt-get install autoconf
+          command: yum install autoconf
       - run:
           name: Install Automake
-          command: apt-get install automake
+          command: yum install automake
       - run:
           name: Install Libtool
-          command: apt-get install libtool
+          command: yum install libtool
       - run:
           name: Install Xerces-c
-          command: apt-get install libxerces-c-dev
+          command: yum install libxerces-c-dev
       - run:
           name: Install MySQL Connector C
-          command: apt-get install libmysqlcppconn-dev
+          command: yum install libmysqlcppconn-dev
       - run:
           name: Install Armadillo
-          command: apt-get install libarmadillo8
+          command: yum install libarmadillo8
       - run:
           name: Autoreconf
           command: autoreconf -isf
