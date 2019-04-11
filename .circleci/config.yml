@@ -14,10 +14,10 @@ jobs:
           command: apt-get update
       - run:
           name: Install Autoconf
-          command: apt-get autoconf
+          command: apt-get install autoconf
       - run:
           name: Install Automake
-          command: apt-get automake
+          command: apt-get install automake
       - run:
           name: Install Libtool
-          command: apt-get libtool
+          command: apt-get install libtool
