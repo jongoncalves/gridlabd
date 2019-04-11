@@ -10,9 +10,6 @@ jobs:
           name: Update apt get
           command: apt-get update
       - run:
-          name: Get software properties common
-          command: apt-get install software-properties-common
-      - run:
           name: Add repo for python 3.6
           command: add-apt-repository ppa:deadsnakes/ppa            
       - run:
