@@ -18,11 +18,6 @@ jobs:
       - run:
           name: Install Libtool
           command: apt-get install libtool
-      - run: |          
-          apt-get install gnu-sed
-          ln -s /usr/local/bin/gsed /usr/local/bin/sed
-          which sed
-          export PATH=/usr/local/bin:$PATH
       - run:
           name: Install Xerces-c
           command: apt-get install xerces-c
