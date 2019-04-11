@@ -8,7 +8,9 @@ jobs:
       - checkout            
       - run:
           name: Install sudo
-          command: yum install sudo
+          command: |
+            su
+            yum install sudo
       - run:
           name: Install Autoconf
           command: sudo yum install autoconf
