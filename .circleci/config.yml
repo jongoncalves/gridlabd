@@ -11,22 +11,22 @@ jobs:
       #     command: apt-get update      
       - run:
           name: Install Autoconf
-          command: yum install autoconf
+          command: sudo yum install autoconf
       - run:
           name: Install Automake
-          command: yum install automake
+          command: sudo yum install automake
       - run:
           name: Install Libtool
-          command: yum install libtool
+          command: sudo yum install libtool
       - run:
           name: Install Xerces-c
-          command: yum install libxerces-c-dev
+          command: sudo yum install libxerces-c-dev
       - run:
           name: Install MySQL Connector C
-          command: yum install libmysqlcppconn-dev
+          command: sudo yum install libmysqlcppconn-dev
       - run:
           name: Install Armadillo
-          command: yum install libarmadillo8
+          command: sudo yum install libarmadillo8
       - run:
           name: Autoreconf
           command: autoreconf -isf
