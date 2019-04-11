@@ -2,15 +2,10 @@ version: 2
 jobs:
   build:
     docker:
-      - image: buildpack-deps:trusty
+      - image: circleci/python:3.6.4
 
     steps:
-      - checkout      
-      - run:
-          name: Update apt, add repo and install python 3.6
-          command: |
-            apt update
-            apt install python3.6
+      - checkout
       - run:
           name: Update apt get
           command: apt-get update
