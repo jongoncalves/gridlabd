@@ -2,31 +2,30 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/buildpack-deps:18.04
-
+      - image: centos/devtoolset-7-toolchain-centos7
     steps:
       - checkout            
-      - run:
-          name: Update apt get
-          command: sudo apt-get update      
+      # - run:
+      #     name: Update apt get
+      #     command: sudo apt-get update
       - run:
           name: Install Autoconf
-          command: sudo apt-get install autoconf
+          command: yum install autoconf
       - run:
           name: Install Automake
-          command: sudo apt-get install automake
+          command: yum install automake
       - run:
           name: Install Libtool
-          command: sudo apt-get install libtool
+          command: yum install libtool
       - run:
           name: Install Xerces-c
-          command: sudo apt-get install libxerces-c-dev
+          command: yum install libxerces-c-dev
       - run:
           name: Install MySQL Connector C
-          command: sudo apt-get install libmysqlcppconn-dev
+          command: yum libmysqlcppconn-dev
       - run:
           name: Install Armadillo
-          command: sudo apt-get install libarmadillo8
+          command: yum libarmadillo8
       - run:
           name: Autoreconf
           command: autoreconf -isf
