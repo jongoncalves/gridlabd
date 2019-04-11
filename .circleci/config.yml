@@ -26,7 +26,7 @@ jobs:
           command: sudo apt-get install libmysqlcppconn-dev
       - run:
           name: Install Armadillo
-          command: sudo apt-get install libarmadillo7
+          command: sudo apt-get install libarmadillo8
       - run:
           name: Autoreconf
           command: autoreconf -isf
