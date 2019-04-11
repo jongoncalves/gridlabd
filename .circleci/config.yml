@@ -32,7 +32,7 @@ jobs:
           command: autoreconf -isf
       - run:
           name: Customization
-          run: |
+          command: |
             ./customize status
             ./customize configure status --enable-silent-rules --prefix=/usr/local --with-mysql=/usr/local 'CXXFLAGS=-w -O2' 'CFLAGS=-w -O2'
       - run:
