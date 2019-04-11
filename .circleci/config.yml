@@ -20,7 +20,7 @@ jobs:
           command: apt-get install libtool
       - run:
           name: Install Xerces-c
-          command: apt-get install xerces-c
+          command: yum install xerces-c
       - run:
           name: Install MySQL Connector C
           command: apt-get install mysql-connector-c
