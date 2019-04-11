@@ -28,6 +28,6 @@ jobs:
       #     name: Install Armadillo
       #     command: apt-get install armadillo
       - run: |
-        autoreconf -isf
-        ./configure --enable-silent-rules --prefix=$PWD/install
-        make -j install
+          autoreconf -isf
+          configure --enable-silent-rules --prefix=$PWD/install
+          make -j install
