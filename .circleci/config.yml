@@ -24,6 +24,10 @@ jobs:
       # - run:
       #     name: Install MySQL Connector C
       #     command: apt-get install mysql-connector-c
-      - run:
-          name: Install Armadillo
-          command: apt-get install armadillo
+      # - run:
+      #     name: Install Armadillo
+      #     command: apt-get install armadillo
+      - run: |
+        autoreconf -isf
+        ./configure --enable-silent-rules --prefix=$PWD/install
+        make -j install
