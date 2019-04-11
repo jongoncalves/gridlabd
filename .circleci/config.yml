@@ -2,22 +2,13 @@ version: 2
 jobs:
   build:
     docker:
-      - image: buildpack-deps:trusty
+      - image: circleci/buildpack-deps:19.04
 
     steps:
       - checkout            
       - run:
           name: Update apt get
-          command: apt-get update
-      - run:
-          name: Add repo for python 3.6
-          command: add-apt-repository ppa:deadsnakes/ppa            
-      - run:
-          name: Update again
-          command: apt-get update
-      - run:
-          name: Install python 3.6
-          command: apt-get install python3.6
+          command: apt-get update      
       - run:
           name: Install Autoconf
           command: apt-get install autoconf
@@ -27,15 +18,15 @@ jobs:
       - run:
           name: Install Libtool
           command: apt-get install libtool
-      # - run:
-      #     name: Install Xerces-c
-      #     command: yum install xerces-c
-      # - run:
-      #     name: Install MySQL Connector C
-      #     command: apt-get install mysql-connector-c
-      # - run:
-      #     name: Install Armadillo
-      #     command: apt-get install armadillo
+      - run:
+          name: Install Xerces-c
+          command: yum install xerces-c
+      - run:
+          name: Install MySQL Connector C
+          command: apt-get install mysql-connector-c
+      - run:
+          name: Install Armadillo
+          command: apt-get install armadillo
       - run:
           name: Autoreconf
           command: autoreconf -isf
