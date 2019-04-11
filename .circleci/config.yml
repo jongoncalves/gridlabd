@@ -21,9 +21,9 @@ jobs:
       # - run:
       #     name: Install Xerces-c
       #     command: yum install xerces-c
-      - run:
-          name: Install MySQL Connector C
-          command: apt-get install mysql-connector-c
+      # - run:
+      #     name: Install MySQL Connector C
+      #     command: apt-get install mysql-connector-c
       - run:
           name: Install Armadillo
           command: apt-get install armadillo
