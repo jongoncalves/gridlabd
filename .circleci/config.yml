@@ -8,16 +8,16 @@ jobs:
       - checkout
       - run:
           name: Update apt get
-          command: apt-get update
+          command: sudo apt-get update
       - run:
           name: Install Autoconf
-          command: apt-get install autoconf
+          command: sudo apt-get install autoconf
       - run:
           name: Install Automake
-          command: apt-get install automake
+          command: sudo apt-get install automake
       - run:
           name: Install Libtool
-          command: apt-get install libtool
+          command: sudo apt-get install libtool
       # - run:
       #     name: Install Xerces-c
       #     command: yum install xerces-c
