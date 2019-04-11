@@ -6,9 +6,9 @@ jobs:
 
     steps:
       - checkout            
-      # - run:
-      #     name: Update apt get
-      #     command: apt-get update      
+      - run:
+          name: Install sudo
+          command: yum install sudo
       - run:
           name: Install Autoconf
           command: sudo yum install autoconf
