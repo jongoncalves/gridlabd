@@ -8,25 +8,25 @@ jobs:
       - checkout            
       - run:
           name: Update apt get
-          command: sudo apt-get update      
+          command: apt-get update      
       - run:
           name: Install Autoconf
-          command: sudo apt-get install autoconf
+          command: apt-get install autoconf
       - run:
           name: Install Automake
-          command: sudo apt-get install automake
+          command: apt-get install automake
       - run:
           name: Install Libtool
-          command: sudo apt-get install libtool
+          command: apt-get install libtool
       - run:
           name: Install Xerces-c
-          command: sudo apt-get install libxerces-c-dev
+          command: apt-get install libxerces-c-dev
       - run:
           name: Install MySQL Connector C
-          command: sudo apt-get install libmysqlcppconn-dev
+          command: apt-get install libmysqlcppconn-dev
       - run:
           name: Install Armadillo
-          command: sudo apt-get install libarmadillo8
+          command: apt-get install libarmadillo8
       - run:
           name: Autoreconf
           command: autoreconf -isf
