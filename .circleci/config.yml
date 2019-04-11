@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: debian:stretch
+      - image: buildpack-deps:trusty
 
     steps:
       - checkout
@@ -14,10 +14,10 @@ jobs:
           command: apt-get update
       - run:
           name: Install Autoconf
-          command: yum autoconf
+          command: sudo apt-get autoconf
       - run:
           name: Install Automake
-          command: yum automake
+          command: sudo apt-get automake
       - run:
           name: Install Libtool
-          command: yum libtool
+          command: sudo apt-get libtool
