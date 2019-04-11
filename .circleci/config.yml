@@ -10,12 +10,17 @@ jobs:
           name: Update apt get
           command: apt-get update
       - run:
+          name: Get software properties common
+          command: apt-get install software-properties-common
+      - run:
+          name: Add repo for python 3.6
+          command: add-apt-repository ppa:deadsnakes/ppa            
+      - run:
+          name: Update again
+          command: apt-get update
+      - run:
           name: Install python 3.6
-          command: |
-            apt-get install software-properties-common
-            add-apt-repository ppa:deadsnakes/ppa
-            apt-get update
-            apt-get install python3.6
+          command: apt-get install python3.6
       - run:
           name: Install Autoconf
           command: apt-get install autoconf
