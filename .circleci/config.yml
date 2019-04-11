@@ -5,10 +5,7 @@ jobs:
       - image: buildpack-deps:trusty
 
     steps:
-      - checkout
-      - run:
-          name: Check the Stream Editor
-          command: which sed
+      - checkout      
       - run:
           name: Update
           command: apt-get update
@@ -21,3 +18,17 @@ jobs:
       - run:
           name: Install Libtool
           command: apt-get install libtool
+      - run: |          
+          apt-get install gnu-sed
+          ln -s /usr/local/bin/gsed /usr/local/bin/sed
+          which sed
+          export PATH=/usr/local/bin:$PATH
+      - run:
+          name: Install Xerces-c
+          command: apt-get install xerces-c
+      - run:
+          name: Install MySQL Connector C
+          command: apt-get install mysql-connector-c
+      - run:
+          name: Install Armadillo
+          command: apt-get install armadillo
