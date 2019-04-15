@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Update
           command: sudo apt-get update
-       - run:
+      - run:
           name: Install Autoconf
           command: sudo apt-get install autoconf
       - run:
