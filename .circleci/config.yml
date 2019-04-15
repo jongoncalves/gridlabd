@@ -6,26 +6,25 @@ jobs:
     steps:
       - checkout            
       - run:
-          name: Update
-          command: sudo apt-get update
+          name: Update; install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install autoconf
+            sudo apt-get install automake
+            sudo apt-get install libtool
+            sudo apt-get install libxerces-c-dev
+            sudo apt-get install libmysqlcppconn-dev
+            sudo apt-get install libarmadillo-dev
       - run:
-          name: Install Autoconf
-          command: sudo apt-get install autoconf
-      - run:
-          name: Install Automake
-          command: sudo apt-get install automake
-      - run:
-          name: Install Libtool
-          command: sudo apt-get install libtool
-      - run:
-          name: Install Xerces-c
-          command: sudo apt-get install libxerces-c-dev
-      - run:
-          name: Install MySQL Connector C
-          command: sudo apt-get install libmysqlcppconn-dev
-      - run:
-          name: Install Armadillo
-          command: sudo apt-get install libarmadillo-dev
+          name: Get Python 3.6 right
+          command: |
+            sudo apt-get install software-properties-common python-software-properties
+            sudo add-apt-repository ppa:deadsnakes/ppa
+            sudo apt update
+            sudo apt install python3.6
+            sudo apt-get install python3-dev
+            sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1
+            sudo update-alternatives  --set python /usr/bin/python3.6
       - run:
           name: Autoreconf
           command: autoreconf -isf
@@ -36,5 +35,11 @@ jobs:
           name: Make Install
           command: |
             make
-            make install
-            make validate
+            make install            
+            export PATH=$PWD/install/bin:$PATH
+      - run:
+          name: Check GLD Version
+          command: gridlabd --version
+      - run:
+          name: Validate GLD
+          command: gridlabd --validate
