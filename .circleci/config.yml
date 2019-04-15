@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/buildpack-deps:18.04
+      - image: centos/python-36-centos7
     steps:
       - checkout            
       - run:
