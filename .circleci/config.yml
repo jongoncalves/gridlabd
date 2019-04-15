@@ -38,7 +38,7 @@ jobs:
             sudo make -j install            
       - run:
           name: Check GLD Version
-          command: .$PWD/install/bin/gridlabd --version
-      - run:
-          name: Validate GLD
-          command: .$PWD/install/bin/gridlabd --validate
+          command: |
+            export PATH=$PWD/install/bin:$PATH
+            gridlabd --version
+            gridlabd --validate
