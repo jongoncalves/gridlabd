@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: fedora
+      - image: circleci/buildpack-deps:xenial
     steps:
       - checkout            
       - run:
