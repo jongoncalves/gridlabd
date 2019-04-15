@@ -18,7 +18,7 @@ jobs:
       - run:
           name: Get Python 3.6 right
           command: |
-            sudo apt-get install software-properties-common python-software-properties
+            sudo apt-get install software-properties-common python-software-properties --yes
             sudo add-apt-repository ppa:deadsnakes/ppa
             sudo apt update
             sudo apt install python3.6
