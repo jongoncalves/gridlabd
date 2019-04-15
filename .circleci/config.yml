@@ -2,38 +2,33 @@ version: 2
 jobs:
   build:
     docker:
-      - image: centos/devtoolset-7-toolchain-centos7
+      - image: circleci/buildpack-deps:18.04
     steps:
       - checkout            
       - run:
-          name: Become SU
-          command: echo | su
-      - run:
+          name: Update
+          command: sudo apt-get update
+       - run:
           name: Install Autoconf
-          command: sudo yum install autoconf
+          command: sudo apt-get install autoconf
       - run:
           name: Install Automake
-          command: yum install automake
+          command: sudo apt-get install automake
       - run:
           name: Install Libtool
-          command: yum install libtool
+          command: sudo apt-get install libtool
       - run:
           name: Install Xerces-c
-          command: yum install libxerces-c-dev
+          command: sudo apt-get install libxerces-c-dev
       - run:
           name: Install MySQL Connector C
-          command: yum libmysqlcppconn-dev
+          command: sudo apt-get install libmysqlcppconn-dev
       - run:
           name: Install Armadillo
-          command: yum libarmadillo8
+          command: sudo apt-get install libarmadillo8
       - run:
           name: Autoreconf
           command: autoreconf -isf
-      - run:
-          name: Customization
-          command: |
-            ./customize status
-            ./customize configure status --enable-silent-rules --prefix=/usr/local --with-mysql=/usr/local 'CXXFLAGS=-w -O2' 'CFLAGS=-w -O2'
       - run:
           name: Configure
           command: ./configure --enable-silent-rules --prefix=$PWD/install
