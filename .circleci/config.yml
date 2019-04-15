@@ -34,8 +34,8 @@ jobs:
       - run:
           name: Make Install
           command: |
-            make
-            make install            
+            sudo make
+            sudo make -j install            
             export PATH=$PWD/install/bin:$PATH
       - run:
           name: Check GLD Version
