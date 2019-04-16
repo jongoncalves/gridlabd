@@ -29,9 +29,8 @@ jobs:
           name: Get Pip and install Python Dependencies
           command: |
             sudo curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
-            sudo python get-pip.py
-            pip --version
-            pip install matplotlib
+            sudo python get-pip.py            
+            sudo pip install matplotlib
       - run:
           name: Autoreconf
           command: autoreconf -isf
