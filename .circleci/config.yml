@@ -31,6 +31,9 @@ jobs:
             sudo apt-get -y install python3-pip
             sudo pip3 install matplotlib
       - run:
+          name: Say Hi
+          command: echo "Hello World"
+      - run:
           name: Autoreconf
           command: autoreconf -isf
       - run:
