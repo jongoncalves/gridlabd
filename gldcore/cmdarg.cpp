@@ -1,6 +1,6 @@
-/** $Id: cmdarg.c 5518 2016-07-15 00:55:28Z andyfisher $
+/** $Id: get_cmdarg()->c 5518 2016-07-15 00:55:28Z andyfisher $
 	Copyright (C) 2008 Battelle Memorial Institute
-	@file cmdarg.c
+	@file get_cmdarg()->c
 	@addtogroup cmdarg Command-line arguments
 	@ingroup core
 
@@ -44,16 +44,16 @@ SET_MYCONTEXT(DMC_CMDARG)
 extern GldMain *my_instance;
 
 /* TODO: remove when daemon.cpp is reentrant */
-STATUS cmdarg_load(int argc, /**< the number of arguments in \p argv */
+DEPRECATED CDECL STATUS cmdarg_load(int argc, /**< the number of arguments in \p argv */
 				   const char *argv[]) /**< a list pointers to the argument string */
 {
-	return my_instance->cmdarg.load(argc,argv);
+	return my_instance->get_cmdarg()->load(argc,argv);
 }
 
 /* TODO: remove then load.c is reentrant */
-extern "C" int cmdarg_runoption(const char *value)
+DEPRECATED CDECL int cmdarg_runoption(const char *value)
 {
-	return my_instance->cmdarg.runoption(value);
+	return my_instance->get_cmdarg()->runoption(value);
 }
 
 ///////////////////////////////////////////////
@@ -71,13 +71,11 @@ GldCmdarg::~GldCmdarg(void)
 
 }
 
-clock_t loader_time = 0;
-
-STATUS load_module_list(FILE *fd,int* test_mod_num)
+DEPRECATED STATUS load_module_list(FILE *fd,int* test_mod_num)
 {
-	return my_instance->cmdarg.load_module_list(fd,test_mod_num);
+	return my_instance->get_cmdarg()->load_module_list(fd,test_mod_num);
 }
-STATUS GldCmdarg::load_module_list(FILE *fd,int* test_mod_num)
+DEPRECATED STATUS GldCmdarg::load_module_list(FILE *fd,int* test_mod_num)
 {
 	char mod_test[100];
 	char line[100];
@@ -101,9 +99,9 @@ STATUS GldCmdarg::load_module_list(FILE *fd,int* test_mod_num)
 	return SUCCESS;
 }
 
-void modhelp_alpha(pntree **ctree, CLASS *oclass)
+DEPRECATED void modhelp_alpha(pntree **ctree, CLASS *oclass)
 {
-	my_instance->cmdarg.modhelp_alpha(ctree,oclass);
+	my_instance->get_cmdarg()->modhelp_alpha(ctree,oclass);
 }
 void GldCmdarg::modhelp_alpha(pntree **ctree, CLASS *oclass)
 {
@@ -139,9 +137,9 @@ void GldCmdarg::modhelp_alpha(pntree **ctree, CLASS *oclass)
 	}
 }
 
-void set_tabs(char *tabs, int tabdepth)
+DEPRECATED void set_tabs(char *tabs, int tabdepth)
 {
-	my_instance->cmdarg.set_tabs(tabs,tabdepth);
+	my_instance->get_cmdarg()->set_tabs(tabs,tabdepth);
 }
 void GldCmdarg::set_tabs(char *tabs, int tabdepth)
 {
@@ -159,9 +157,9 @@ void GldCmdarg::set_tabs(char *tabs, int tabdepth)
 	}
 }
 
-void print_class_d(CLASS *oclass, int tabdepth)
+DEPRECATED void print_class_d(CLASS *oclass, int tabdepth)
 {
-	my_instance->cmdarg.print_class_d(oclass,tabdepth);
+	my_instance->get_cmdarg()->print_class_d(oclass,tabdepth);
 }
 void GldCmdarg::print_class_d(CLASS *oclass, int tabdepth)
 {
@@ -209,18 +207,18 @@ void GldCmdarg::print_class_d(CLASS *oclass, int tabdepth)
 	printf("%s}\n\n", tabs);
 }
 
-void print_class(CLASS *oclass)
+DEPRECATED void print_class(CLASS *oclass)
 {
-	my_instance->cmdarg.print_class(oclass);
+	my_instance->get_cmdarg()->print_class(oclass);
 }
 void GldCmdarg::print_class(CLASS *oclass)
 {
 	print_class_d(oclass, 0);
 }
 
-void print_modhelp_tree(pntree *ctree)
+DEPRECATED void print_modhelp_tree(pntree *ctree)
 {
-	my_instance->cmdarg.print_modhelp_tree(ctree);
+	my_instance->get_cmdarg()->print_modhelp_tree(ctree);
 }
 void GldCmdarg::print_modhelp_tree(pntree *ctree)
 {
@@ -237,12 +235,12 @@ void GldCmdarg::print_modhelp_tree(pntree *ctree)
 	}
 }
 
-static int compare(const void *a, const void *b)
+DEPRECATED static int compare(const void *a, const void *b)
 {
 	return stricmp(*(char**)a,*(char**)b);
 }
 
-static int help(void *main, int argc, const char *argv[]);
+DEPRECATED static int help(void *main, int argc, const char *argv[]);
 
 /************************************************************************/
 /* COMMAND LINE PARSING ROUTINES 
@@ -294,9 +292,9 @@ STATUS GldCmdarg::no_cmdargs(void)
 	return SUCCESS;
 }
 
-static int copyright(void *main, int argc, const char *argv[])
+DEPRECATED static int copyright(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.copyright(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->copyright(argc,argv);
 }
 int GldCmdarg::copyright(int argc, const char *argv[])
 {
@@ -304,9 +302,9 @@ int GldCmdarg::copyright(int argc, const char *argv[])
 	return 0;
 }
 
-static int warn(void *main, int argc, const char *argv[])
+DEPRECATED static int warn(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.warn(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->warn(argc,argv);
 }
 int GldCmdarg::warn(int argc, const char *argv[])
 {
@@ -314,9 +312,9 @@ int GldCmdarg::warn(int argc, const char *argv[])
 	return 0;
 }
 
-static int bothstdout(void *main, int argc, const char *argv[])
+DEPRECATED static int bothstdout(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.bothstdout(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->bothstdout(argc,argv);
 }
 int GldCmdarg::bothstdout(int argc, const char *argv[])
 {
@@ -324,9 +322,9 @@ int GldCmdarg::bothstdout(int argc, const char *argv[])
 	return 0;
 }
 
-static int check(void *main, int argc, const char *argv[])
+DEPRECATED static int check(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.check(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->check(argc,argv);
 }
 int GldCmdarg::check(int argc, const char *argv[])
 {
@@ -340,9 +338,9 @@ int GldCmdarg::check(int argc, const char *argv[])
 	return 0;
 }
 
-static int debug(void *main, int argc, const char *argv[])
+DEPRECATED static int debug(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.debug(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->debug(argc,argv);
 }
 int GldCmdarg::debug(int argc, const char *argv[])
 {
@@ -350,9 +348,9 @@ int GldCmdarg::debug(int argc, const char *argv[])
 	return 0;
 }
 
-static int debugger(void *main, int argc, const char *argv[])
+DEPRECATED static int debugger(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.debugger(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->debugger(argc,argv);
 }
 int GldCmdarg::debugger(int argc, const char *argv[])
 {
@@ -361,9 +359,9 @@ int GldCmdarg::debugger(int argc, const char *argv[])
 	return 0;
 }
 
-static int dumpall(void *main, int argc, const char *argv[])
+DEPRECATED static int dumpall(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.dumpall(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->dumpall(argc,argv);
 }
 int GldCmdarg::dumpall(int argc, const char *argv[])
 {
@@ -371,9 +369,9 @@ int GldCmdarg::dumpall(int argc, const char *argv[])
 	return 0;
 }
 
-static int quiet(void *main, int argc, const char *argv[])
+DEPRECATED static int quiet(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.quiet(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->quiet(argc,argv);
 }
 int GldCmdarg::quiet(int argc, const char *argv[])
 {
@@ -381,9 +379,9 @@ int GldCmdarg::quiet(int argc, const char *argv[])
 	return 0;
 }
 
-static int verbose(void *main, int argc, const char *argv[])
+DEPRECATED static int verbose(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.verbose(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->verbose(argc,argv);
 }
 int GldCmdarg::verbose(int argc, const char *argv[])
 {
@@ -391,9 +389,9 @@ int GldCmdarg::verbose(int argc, const char *argv[])
 	return 0;
 }
 
-static int _check_version(void *main, int argc, const char *argv[])
+DEPRECATED static int _check_version(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg._check_version(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->_check_version(argc,argv);
 }
 int GldCmdarg::_check_version(int argc, const char *argv[])
 {
@@ -401,9 +399,9 @@ int GldCmdarg::_check_version(int argc, const char *argv[])
 	return 0;
 }
 
-static int profile(void *main, int argc, const char *argv[])
+DEPRECATED static int profile(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.profile(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->profile(argc,argv);
 }
 int GldCmdarg::profile(int argc, const char *argv[])
 {
@@ -411,9 +409,9 @@ int GldCmdarg::profile(int argc, const char *argv[])
 	return 0;
 }
 
-static int mt_profile(void *main, int argc, const char *argv[])
+DEPRECATED static int mt_profile(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.mt_profile(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->mt_profile(argc,argv);
 }
 int GldCmdarg::mt_profile(int argc, const char *argv[])
 {
@@ -423,7 +421,9 @@ int GldCmdarg::mt_profile(int argc, const char *argv[])
 		global_mt_analysis = atoi(*++argv);
 		argc--;
 		if ( global_threadcount>1 )
-			output_warning("--mt_profile forces threadcount=1");
+		{
+			IN_MYCONTEXT output_warning("--mt_profile forces threadcount=1");
+		}
 		if ( global_mt_analysis<2 )
 		{
 			output_error("--mt_profile <n-threads> value must be 2 or greater");
@@ -442,9 +442,9 @@ int GldCmdarg::mt_profile(int argc, const char *argv[])
 	}
 }
 
-static int pauseatexit(void *main, int argc, const char *argv[])
+DEPRECATED static int pauseatexit(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.pauseatexit(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->pauseatexit(argc,argv);
 }
 int GldCmdarg::pauseatexit(int argc, const char *argv[])
 {
@@ -452,18 +452,18 @@ int GldCmdarg::pauseatexit(int argc, const char *argv[])
 	return 0;
 }
 
-static int compile(void *main, int argc, const char *argv[])
+DEPRECATED static int compile(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.compile(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->compile(argc,argv);
 }
 int GldCmdarg::compile(int argc, const char *argv[])
 {
 	global_compileonly = !global_compileonly;
 	return 0;
 }
-static int license(void *main, int argc, const char *argv[])
+DEPRECATED static int license(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.license(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->license(argc,argv);
 }
 int GldCmdarg::license(int argc, const char *argv[])
 {
@@ -471,9 +471,9 @@ int GldCmdarg::license(int argc, const char *argv[])
 	return 0;
 }
 
-static int server_portnum(void *main, int argc, const char *argv[])
+DEPRECATED static int server_portnum(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.server_portnum(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->server_portnum(argc,argv);
 }
 int GldCmdarg::server_portnum(int argc, const char *argv[])
 {
@@ -494,9 +494,9 @@ int GldCmdarg::server_portnum(int argc, const char *argv[])
 	}
 }
 
-static int server_inaddr(void *main, int argc, const char *argv[])
+DEPRECATED static int server_inaddr(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.server_inaddr(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->server_inaddr(argc,argv);
 }
 int GldCmdarg::server_inaddr(int argc, const char *argv[])
 {
@@ -517,28 +517,118 @@ int GldCmdarg::server_inaddr(int argc, const char *argv[])
 	}
 }
 
-static int version(void *main, int argc, const char *argv[])
+DEPRECATED static int version(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.version(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->version(argc,argv);
 }
 int GldCmdarg::version(int argc, const char *argv[])
 {
-	output_message("GridLAB-D %d.%d.%d-%d (%s) %d-bit %s %s", 
-		global_version_major, global_version_minor, global_version_patch, 
-		global_version_build, global_version_branch, 8*sizeof(void*), global_platform,
-#ifdef _DEBUG
-	"DEBUG"
-#else
-	"RELEASE"
-#endif
-	);
-
+	output_message("%s %s-%d", PACKAGE_NAME, PACKAGE_VERSION, BUILDNUM);
 	return 0;
 }
 
-static int dsttest(void *main, int argc, const char *argv[])
+DEPRECATED static int build_info(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.dsttest(argc,argv);
+	enum e_format {RAW, JSON} format = RAW;
+	int parsed = 0;
+	if ( argc > 1 )
+	{
+		char tag[1024];
+		if ( sscanf(argv[1],"format=%1023[a-z]",tag) == 1 )
+		{
+			if ( strcmp(tag,"raw") == 0 )
+			{
+				format = RAW;
+				parsed = 1;
+			}
+			else if ( strcmp(tag,"json") == 0 )
+			{
+				format = JSON;
+				parsed = 1;
+			}
+			else
+			{
+				output_error("build-info format '%s' is not valid",tag);
+				return CMDERR;
+			}
+		}
+	}
+	char status[]=BUILD_STATUS, *ptr=NULL, *last=NULL;
+	bool old = global_suppress_repeat_messages;
+	global_suppress_repeat_messages = false;
+	switch(format)
+	{
+		case JSON:
+			output_message("{");
+			output_message("\t\"application\": \"%s\",", PACKAGE_NAME);
+			output_message("\t\"version\": \"%s\",", PACKAGE_VERSION);
+			output_message("\t\"build\": \"%d\",", BUILDNUM);
+			output_message("\t\"origin\": \"%s\",", BUILD_NAME);
+			output_message("\t\"source\": \"%s\",", BUILD_URL);
+			output_message("\t\"system\": \"%s\",", BUILD_SYSTEM);
+			output_message("\t\"release\": \"%s\",", BUILD_RELEASE);
+			output_message("\t\"id\": \"%s\",", BUILD_ID);
+			output_message("\t\"options\": \"%s", BUILD_OPTIONS
+#ifdef HAVE_NCURSES_H
+				" ncurses"
+#endif
+#ifdef HAVE_PYTHON
+				" python"
+#endif
+#ifdef HAVE_MYSQL
+				" mysql"
+#endif
+#ifdef HAVE_MATLAB
+				" matlab"
+#endif
+				"\","
+		);
+			output_message("\t\"status\": [");
+			for ( ptr = strtok_r(status,"\n",&last) ; ptr != NULL ; ptr = strtok_r(NULL,"\n",&last) )
+			{
+				if ( strcmp(ptr,"") != 0 )
+				{
+					output_message("\t\t\"%s\",",ptr);
+				}
+			}
+			output_message("\t\t\"\"]");
+			output_message("}");
+			break;
+		case RAW:
+		default:
+			output_message("application: %s", PACKAGE_NAME);
+			output_message("version: %s", PACKAGE_VERSION);
+			output_message("build: %d", BUILDNUM);
+			output_message("origin: %s", BUILD_NAME);
+			output_message("source: %s", BUILD_URL);
+			output_message("system: %s", BUILD_SYSTEM);
+			output_message("release: %s", BUILD_RELEASE);
+			output_message("id: %s", BUILD_ID);
+			output_message("options: %s", BUILD_OPTIONS
+#ifdef HAVE_NCURSES_H
+				" ncurses"
+#endif
+#ifdef HAVE_PYTHON
+				" python"
+#endif
+#ifdef HAVE_MYSQL
+				" mysql"
+#endif
+#ifdef HAVE_MATLAB
+				" matlab"
+#endif
+		);
+			output_message("status: %s", BUILD_STATUS);
+			break;
+	}
+	global_suppress_repeat_messages = old;		
+
+	return parsed;
+}
+
+DEPRECATED static int dsttest(void *main, int argc, const char *argv[])
+{
+	return ((GldMain*)main)->get_cmdarg()->dsttest(argc,argv);
 }
 int GldCmdarg::dsttest(int argc, const char *argv[])
 {
@@ -546,9 +636,9 @@ int GldCmdarg::dsttest(int argc, const char *argv[])
 	return 0;
 }
 
-static int randtest(void *main, int argc, const char *argv[])
+DEPRECATED static int randtest(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.randtest(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->randtest(argc,argv);
 }
 int GldCmdarg::randtest(int argc, const char *argv[])
 {
@@ -556,9 +646,9 @@ int GldCmdarg::randtest(int argc, const char *argv[])
 	return 0;
 }
 
-static int unitstest(void *main, int argc, const char *argv[])
+DEPRECATED static int unitstest(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.unitstest(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->unitstest(argc,argv);
 }
 int GldCmdarg::unitstest(int argc, const char *argv[])
 {
@@ -566,9 +656,9 @@ int GldCmdarg::unitstest(int argc, const char *argv[])
 	return 0;
 }
 
-static int scheduletest(void *main, int argc, const char *argv[])
+DEPRECATED static int scheduletest(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.scheduletest(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->scheduletest(argc,argv);
 }
 int GldCmdarg::scheduletest(int argc, const char *argv[])
 {
@@ -576,9 +666,9 @@ int GldCmdarg::scheduletest(int argc, const char *argv[])
 	return 0;
 }
 
-static int loadshapetest(void *main, int argc, const char *argv[])
+DEPRECATED static int loadshapetest(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.loadshapetest(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->loadshapetest(argc,argv);
 }
 int GldCmdarg::loadshapetest(int argc, const char *argv[])
 {
@@ -586,9 +676,9 @@ int GldCmdarg::loadshapetest(int argc, const char *argv[])
 	return 0;
 }
 
-static int endusetest(void *main, int argc, const char *argv[])
+DEPRECATED static int endusetest(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.endusetest(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->endusetest(argc,argv);
 }
 int GldCmdarg::endusetest(int argc, const char *argv[])
 {
@@ -596,9 +686,9 @@ int GldCmdarg::endusetest(int argc, const char *argv[])
 	return 0;
 }
 
-static int xmlstrict(void *main, int argc, const char *argv[])
+DEPRECATED static int xmlstrict(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.xmlstrict(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->xmlstrict(argc,argv);
 }
 int GldCmdarg::xmlstrict(int argc, const char *argv[])
 {
@@ -607,9 +697,9 @@ int GldCmdarg::xmlstrict(int argc, const char *argv[])
 	return 0;
 }
 
-static int globaldump(void *main, int argc, const char *argv[])
+DEPRECATED static int globaldump(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.globaldump(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->globaldump(argc,argv);
 }
 int GldCmdarg::globaldump(int argc, const char *argv[])
 {
@@ -617,9 +707,9 @@ int GldCmdarg::globaldump(int argc, const char *argv[])
 	return CMDOK;
 }
 
-static int relax(void *main, int argc, const char *argv[])
+DEPRECATED static int relax(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.relax(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->relax(argc,argv);
 }
 int GldCmdarg::relax(int argc, const char *argv[])
 {
@@ -627,9 +717,9 @@ int GldCmdarg::relax(int argc, const char *argv[])
 	return 0;
 }
 
-static int pidfile(void *main, int argc, const char *argv[])
+DEPRECATED static int pidfile(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.pidfile(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->pidfile(argc,argv);
 }
 int GldCmdarg::pidfile(int argc, const char *argv[])
 {
@@ -641,9 +731,9 @@ int GldCmdarg::pidfile(int argc, const char *argv[])
 	return 0;
 }
 
-static int kml(void *main, int argc, const char *argv[])
+DEPRECATED static int kml(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.kml(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->kml(argc,argv);
 }
 int GldCmdarg::kml(int argc, const char *argv[])
 {
@@ -655,9 +745,9 @@ int GldCmdarg::kml(int argc, const char *argv[])
 	return 0;
 }
 
-static int avlbalance(void *main, int argc, const char *argv[])
+DEPRECATED static int avlbalance(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.avlbalance(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->avlbalance(argc,argv);
 }
 int GldCmdarg::avlbalance(int argc, const char *argv[])
 {
@@ -665,9 +755,9 @@ int GldCmdarg::avlbalance(int argc, const char *argv[])
 	return 0;
 }
 
-static int testall(void *main, int argc, const char *argv[])
+DEPRECATED static int testall(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.testall(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->testall(argc,argv);
 }
 int GldCmdarg::testall(int argc, const char *argv[])
 {
@@ -702,9 +792,9 @@ int GldCmdarg::testall(int argc, const char *argv[])
 	return 1;
 }
 
-static int modhelp(void *main, int argc, const char *argv[])
+DEPRECATED static int modhelp(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.modhelp(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->modhelp(argc,argv);
 }
 int GldCmdarg::modhelp(int argc, const char *argv[])
 {
@@ -816,9 +906,9 @@ int GldCmdarg::modhelp(int argc, const char *argv[])
 	return 1;
 }
 
-static int modlist(void *main, int argc, const char *argv[])
+DEPRECATED static int modlist(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.modlist(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->modlist(argc,argv);
 }
 int GldCmdarg::modlist(int arvc, const char *argv[])
 {
@@ -826,9 +916,9 @@ int GldCmdarg::modlist(int arvc, const char *argv[])
 	return 1;
 }
 
-static int modtest(void *main, int argc, const char *argv[])
+DEPRECATED static int modtest(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.modtest(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->modtest(argc,argv);
 }
 int GldCmdarg::modtest(int argc, const char *argv[])
 {
@@ -875,9 +965,9 @@ int GldCmdarg::modtest(int argc, const char *argv[])
 	return 1;
 }
 
-static int test(void *main, int argc, const char *argv[])
+DEPRECATED static int test(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.test(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->test(argc,argv);
 }
 int GldCmdarg::test(int argc, const char *argv[])
 {
@@ -892,9 +982,9 @@ int GldCmdarg::test(int argc, const char *argv[])
 	return n;
 }
 
-static int define(void *main, int argc, const char *argv[])
+DEPRECATED static int define(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.define(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->define(argc,argv);
 }
 int GldCmdarg::define(int argc, const char *argv[])
 {
@@ -921,9 +1011,9 @@ int GldCmdarg::define(int argc, const char *argv[])
 	}
 }
 
-static int globals(void *main, int argc, const char *argv[])
+DEPRECATED static int globals(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.globals(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->globals(argc,argv);
 }
 int GldCmdarg::globals(int argc, const char *argv[])
 {
@@ -961,9 +1051,9 @@ int GldCmdarg::globals(int argc, const char *argv[])
 	return 0;
 }
 
-static int redirect(void *main, int argc, const char *argv[])
+DEPRECATED static int redirect(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.redirect(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->redirect(argc,argv);
 }
 int GldCmdarg::redirect(int argc, const char *argv[])
 {
@@ -1035,9 +1125,9 @@ int GldCmdarg::redirect(int argc, const char *argv[])
 	return 1;
 }
 
-static int libinfo(void *main, int argc, const char *argv[])
+DEPRECATED static int libinfo(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.libinfo(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->libinfo(argc,argv);
 }
 int GldCmdarg::libinfo(int argc, const char *argv[])
 {
@@ -1058,9 +1148,9 @@ int GldCmdarg::libinfo(int argc, const char *argv[])
 	return CMDERR;
 }
 
-static int threadcount(void *main, int argc, const char *argv[])
+DEPRECATED static int threadcount(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.threadcount(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->threadcount(argc,argv);
 }
 int GldCmdarg::threadcount(int argc, const char *argv[])
 {
@@ -1079,9 +1169,9 @@ int GldCmdarg::threadcount(int argc, const char *argv[])
 	return 1;
 }
 
-static int output(void *main, int argc, const char *argv[])
+DEPRECATED static int output(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.output(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->output(argc,argv);
 }
 int GldCmdarg::output(int argc, const char *argv[])
 {
@@ -1102,9 +1192,9 @@ int GldCmdarg::output(int argc, const char *argv[])
 	}
 }
 
-static int environment(void *main, int argc, const char *argv[])
+DEPRECATED static int environment(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.environment(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->environment(argc,argv);
 }
 int GldCmdarg::environment(int argc, const char *argv[])
 {
@@ -1123,9 +1213,9 @@ int GldCmdarg::environment(int argc, const char *argv[])
 	return 1;
 }
 
-static int xmlencoding(void *main, int argc, const char *argv[])
+DEPRECATED static int xmlencoding(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.xmlencoding(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->xmlencoding(argc,argv);
 }
 int GldCmdarg::xmlencoding(int argc, const char *argv[])
 {
@@ -1147,9 +1237,9 @@ int GldCmdarg::xmlencoding(int argc, const char *argv[])
 	return 1;
 }
 
-static int xsd(void *main, int argc, const char *argv[])
+DEPRECATED static int xsd(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.xsd(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->xsd(argc,argv);
 }
 int GldCmdarg::xsd(int argc, const char *argv[])
 {
@@ -1168,9 +1258,9 @@ int GldCmdarg::xsd(int argc, const char *argv[])
 	}
 }
 
-static int xsl(void *main, int argc, const char *argv[])
+DEPRECATED static int xsl(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.xsl(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->xsl(argc,argv);
 }
 int GldCmdarg::xsl(int argc, const char *argv[])
 {
@@ -1206,9 +1296,9 @@ int GldCmdarg::xsl(int argc, const char *argv[])
 	}
 }
 
-static int _stream(void *main, int argc, const char *argv[])
+DEPRECATED static int _stream(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg._stream(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->_stream(argc,argv);
 }
 int GldCmdarg::_stream(int argc, const char *argv[])
 {
@@ -1216,9 +1306,9 @@ int GldCmdarg::_stream(int argc, const char *argv[])
 	return 0;
 }
 
-static int server(void *main, int argc, const char *argv[])
+DEPRECATED static int server(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.server(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->server(argc,argv);
 }
 int GldCmdarg::server(int argc, const char *argv[])
 {
@@ -1226,9 +1316,9 @@ int GldCmdarg::server(int argc, const char *argv[])
 	return 0;
 }
 
-static int clearmap(void *main, int argc, const char *argv[])
+DEPRECATED static int clearmap(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.clearmap(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->clearmap(argc,argv);
 }
 int GldCmdarg::clearmap(int argc, const char *argv[])
 {
@@ -1236,9 +1326,9 @@ int GldCmdarg::clearmap(int argc, const char *argv[])
 	return 0;
 }
 
-static int pstatus(void *main, int argc, const char *argv[])
+DEPRECATED static int pstatus(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.pstatus(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->pstatus(argc,argv);
 }
 int GldCmdarg::pstatus(int argc, const char *argv[])
 {
@@ -1247,9 +1337,9 @@ int GldCmdarg::pstatus(int argc, const char *argv[])
 	return 0;
 }
 
-static int pkill(void *main, int argc, const char *argv[])
+DEPRECATED static int pkill(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.pkill(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->pkill(argc,argv);
 }
 int GldCmdarg::pkill(int argc, const char *argv[])
 {
@@ -1271,9 +1361,9 @@ int GldCmdarg::pkill(int argc, const char *argv[])
 	}
 }
 
-static int plist(void *main, int argc, const char *argv[])
+DEPRECATED static int plist(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.plist(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->plist(argc,argv);
 }
 int GldCmdarg::plist(int argc, const char *argv[])
 {
@@ -1282,9 +1372,9 @@ int GldCmdarg::plist(int argc, const char *argv[])
 	return 0;
 }
 
-static int pcontrol(void *main, int argc, const char *argv[])
+DEPRECATED static int pcontrol(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.pcontrol(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->pcontrol(argc,argv);
 }
 int GldCmdarg::pcontrol(int argc, const char *argv[])
 {
@@ -1293,9 +1383,9 @@ int GldCmdarg::pcontrol(int argc, const char *argv[])
 	return 0;
 }
 
-static int info(void *main, int argc, const char *argv[])
+DEPRECATED static int info(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.info(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->info(argc,argv);
 }
 int GldCmdarg::info(int argc, const char *argv[])
 {
@@ -1333,9 +1423,9 @@ int GldCmdarg::info(int argc, const char *argv[])
 	}
 }
 
-static int slave(void *main, int argc, const char *argv[])
+DEPRECATED static int slave(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.slave(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->slave(argc,argv);
 }
 int GldCmdarg::slave(int argc, const char *argv[])
 {
@@ -1374,9 +1464,9 @@ int GldCmdarg::slave(int argc, const char *argv[])
 	return 1;
 }
 
-static int slavenode(void *main, int argc, const char *argv[])
+DEPRECATED static int slavenode(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.slavenode(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->slavenode(argc,argv);
 }
 int GldCmdarg::slavenode(int argc, const char *argv[])
 {
@@ -1384,9 +1474,9 @@ int GldCmdarg::slavenode(int argc, const char *argv[])
 	return CMDOK;
 }
 
-static int slave_id(void *main, int argc, const char *argv[])
+DEPRECATED static int slave_id(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.slave_id(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->slave_id(argc,argv);
 }
 int GldCmdarg::slave_id(int argc, const char *argv[])
 {
@@ -1402,9 +1492,9 @@ int GldCmdarg::slave_id(int argc, const char *argv[])
 	return 1;
 }
 
-static int example(void *main, int argc, const char *argv[])
+DEPRECATED static int example(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.example(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->example(argc,argv);
 }
 int GldCmdarg::example(int argc, const char *argv[])
 {
@@ -1449,16 +1539,22 @@ int GldCmdarg::example(int argc, const char *argv[])
 	output_redirect("error",NULL);
 	output_redirect("warning",NULL);
 	if ( !object_init(object) )
-		output_warning("--example: unable to initialize example object from class %s", classname);
+	{
+		IN_MYCONTEXT output_warning("--example: unable to initialize example object from class %s", classname);
+	}
 	if ( object_save(buffer,sizeof(buffer),object)>0 )
+	{
 		output_raw("%s\n", buffer);
+	}
 	else
-		output_warning("no output generated for object");
+	{
+		IN_MYCONTEXT output_warning("no output generated for object");
+	}
 	return CMDOK;
 }
-static int mclassdef(void *main, int argc, const char *argv[])
+DEPRECATED static int mclassdef(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.mclassdef(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->mclassdef(argc,argv);
 }
 int GldCmdarg::mclassdef(int argc, const char *argv[])
 {
@@ -1505,7 +1601,9 @@ int GldCmdarg::mclassdef(int argc, const char *argv[])
         output_redirect("error",NULL);
         output_redirect("warning",NULL);
         if ( !object_init(obj) )
-                output_warning("--mclassdef: unable to initialize mclassdef object from class %s", classname);
+        {
+                IN_MYCONTEXT output_warning("--mclassdef: unable to initialize mclassdef object from class %s", classname);
+        }
 	
 	/* output the classdef */
 	count = sprintf(buffer,"struct('module','%s','class','%s'", modname, classname);
@@ -1514,18 +1612,22 @@ int GldCmdarg::mclassdef(int argc, const char *argv[])
 		char temp[1024];
 		const char *value = object_property_to_string(obj, prop->name, temp, 1023);
 		if ( strchr(prop->name,'.')!=NULL )
+		{
 			continue; /* do not output structures */
+		}
 		if ( value!=NULL )
-                       count += sprintf(buffer+count, ",...\n\t'%s','%s'", prop->name, value);
+		{
+			count += sprintf(buffer+count, ",...\n\t'%s','%s'", prop->name, value);
+		}
 	}
 	count += sprintf(buffer+count,");\n");
 	output_raw("%s",buffer);
         return CMDOK;
 }
 
-static int locktest(void *main, int argc, const char *argv[])
+DEPRECATED static int locktest(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.locktest(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->locktest(argc,argv);
 }
 int GldCmdarg::locktest(int argc, const char *argv[])
 {
@@ -1533,9 +1635,9 @@ int GldCmdarg::locktest(int argc, const char *argv[])
 	return CMDOK;
 }
 
-static int workdir(void *main, int argc, const char *argv[])
+DEPRECATED static int workdir(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.workdir(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->workdir(argc,argv);
 }
 int GldCmdarg::workdir(int argc, const char *argv[])
 {
@@ -1562,9 +1664,9 @@ int GldCmdarg::workdir(int argc, const char *argv[])
 	}
 }
 
-static int local_daemon(void *main, int argc, const char *argv[])
+DEPRECATED static int local_daemon(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.local_daemon(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->local_daemon(argc,argv);
 }
 int GldCmdarg::local_daemon(int argc, const char *argv[])
 {
@@ -1596,9 +1698,9 @@ int GldCmdarg::local_daemon(int argc, const char *argv[])
 	}
 }
 
-static int remote_client(void *main, int argc, const char *argv[])
+DEPRECATED static int remote_client(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.remote_client(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->remote_client(argc,argv);
 }
 int GldCmdarg::remote_client(int argc, const char *argv[])
 {
@@ -1611,18 +1713,18 @@ int GldCmdarg::remote_client(int argc, const char *argv[])
 		return daemon_remote_client(argc,argv);
 }
 
-static int printenv(void *main, int argc, const char *argv[])
+DEPRECATED static int printenv(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.printenv(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->printenv(argc,argv);
 }
 int GldCmdarg::printenv(int argc, const char *argv[])
 {
 	return system("printenv") == 0 ? 0 : CMDERR;
 }
 
-static int origin(void *main, int argc, const char *argv[])
+DEPRECATED static int origin(void *main, int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.origin(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->origin(argc,argv);
 }
 int GldCmdarg::origin(int argc, const char *argv[])
 {
@@ -1670,7 +1772,7 @@ int GldCmdarg::origin(int argc, const char *argv[])
 /* CMDARG structure below                    */
 /*********************************************/
 
-static CMDARG main_commands[] = {
+DEPRECATED static CMDARG main_commands[] = {
 
 	/* NULL,NULL,NULL,NULL, "Section heading */
 	{NULL,NULL,NULL,NULL, "Command-line options"},
@@ -1697,6 +1799,7 @@ static CMDARG main_commands[] = {
 	{"copyright",	NULL,	copyright,		NULL, "Displays copyright" },
 	{"license",		NULL,	license,		NULL, "Displays the license agreement" },
 	{"version",		"V",	version,		NULL, "Displays the version information" },
+	{"build-info",	NULL,	build_info,		NULL, "Displays the build information" },
 	{"setup",		NULL,	setup,			NULL, "Open simulation setup screen" },
 	{"origin",		NULL,	origin,			NULL, "Display origin information" },
 
@@ -1724,12 +1827,12 @@ static CMDARG main_commands[] = {
 	{"xsl",			NULL,	xsl,			"module[,module[,...]]]", "Create the XSL file for the module(s) listed" },
 
 	{NULL,NULL,NULL,NULL, "Help"},
-	{"help",		"h",		help,		NULL, "Displays command line help" },
-	{"info",		NULL,		info,		"<subject>", "Obtain online help regarding <subject>"},
-	{"modhelp",		NULL,		modhelp,	"module[:class]", "Display structure of a class or all classes in a module" },
-	{"modlist",		NULL,		modlist,	NULL, "Display list of available modules"},
-	{"example",		NULL,		example,	"module:class", "Display an example of an instance of the class after init" },
-	{"mclassdef",		NULL,		mclassdef,	"module:class", "Generate Matlab classdef of an instance of the class after init" },
+	{"help",		"h",	help,			NULL, "Displays command line help" },
+	{"info",		NULL,	info,			"<subject>", "Obtain online help regarding <subject>"},
+	{"modhelp",		NULL,	modhelp,		"module[:class]", "Display structure of a class or all classes in a module" },
+	{"modlist",		NULL,	modlist,		NULL, "Display list of available modules"},
+	{"example",		NULL,	example,		"module:class", "Display an example of an instance of the class after init" },
+	{"mclassdef",	NULL,	mclassdef,		"module:class", "Generate Matlab classdef of an instance of the class after init" },
 
 	{NULL,NULL,NULL,NULL, "Process control"},
 	{"pidfile",		NULL,	pidfile,		"[=<filename>]", "Set the process ID file (default is gridlabd.pid)" },
@@ -1743,7 +1846,7 @@ static CMDARG main_commands[] = {
 	{"compile",		"C",	compile,		NULL, "Toggles compile-only flags" },
 	{"environment",	"e",	environment,	"<appname>", "Set the application to use for run environment" },
 	{"output",		"o",	output,			"<file>", "Enables save of output to a file (default is gridlabd.glm)" },
-	{"pause",		NULL,	pauseatexit,			NULL, "Toggles pause-at-exit feature" },
+	{"pause",		NULL,	pauseatexit,	NULL, "Toggles pause-at-exit feature" },
 	{"relax",		NULL,	relax,			NULL, "Allows implicit variable definition when assignments are made" },
 
 	{NULL,NULL,NULL,NULL, "Server mode"},
@@ -1779,9 +1882,9 @@ int GldCmdarg::runoption(const char *value)
 	return 0;
 }
 
-static int help(void *main,int argc, const char *argv[])
+DEPRECATED static int help(void *main,int argc, const char *argv[])
 {
-	return ((GldMain*)main)->cmdarg.help(argc,argv);
+	return ((GldMain*)main)->get_cmdarg()->help(argc,argv);
 }
 
 int GldCmdarg::help(int argc, const char *argv[])
@@ -1902,12 +2005,14 @@ STATUS GldCmdarg::load(int argc,const char *argv[])
 			if (**argv!='-')
 			{
 				if (global_test_mode)
-					output_warning("file '%s' ignored in test mode", *argv);
+				{
+					IN_MYCONTEXT output_warning("file '%s' ignored in test mode", *argv);
 					/* TROUBLESHOOT
 					   This warning is caused by an attempt to read an input file in self-test mode.  
 					   The use of self-test model precludes reading model files.  Try running the system
 					   in normal more or leaving off the model file name.
 					 */
+				}
 				else {
 					clock_t start = clock();
 

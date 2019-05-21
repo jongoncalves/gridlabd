@@ -54,6 +54,7 @@ typedef int EXITCODE;
 #define XC_PRCERR 7 /* process control error */
 #define XC_SVRKLL 8 /* server killed */
 #define XC_IOERR 9 /* I/O error */
+#define XC_LDERR 10 /* model load error */
 #define XC_SHFAILED 127 /* shell failure - per system(3) */
 #define XC_SIGNAL 128 /* signal caught - must be or'd with SIG value if known */
 #define XC_SIGINT (XC_SIGNAL|SIGINT) /* SIGINT caught */
@@ -124,6 +125,7 @@ GLOBAL char global_urlbase[1024] /**< default urlbase used for online resources 
 	INIT("http://www.gridlabd.org/"); 
 #endif
 GLOBAL unsigned int global_randomseed INIT(0); /**< random number seed (default 0 means true randomization, non-zero means deterministic random state) */
+GLOBAL unsigned int global_randomstate INIT(0);
 GLOBAL char global_include[1024] 
 #ifdef WIN32
 	INIT(""); 
@@ -329,6 +331,8 @@ GLOBAL char32 global_sanitizeoffset INIT(""); /**< sanitize lat/lon offset */
 GLOBAL bool global_run_powerworld INIT(false);
 GLOBAL bool global_bigranks INIT(true); /**< enable non-recursive set_rank function (good for very deep models) */
 GLOBAL char1024 global_svnroot INIT("http://gridlab-d.svn.sourceforge.net/svnroot/gridlab-d");
+GLOBAL char1024 global_github INIT("https://github.com/gridlab-d");
+GLOBAL char1024 global_gitraw INIT("https://raw.githubusercontent.com/gridlab-d");
 GLOBAL char1024 global_wget_options INIT("maxsize:100MB;update:newer"); /**< maximum size of wget request */
 
 GLOBAL bool global_reinclude INIT(false); /**< allow the same include file to be included multiple times */
